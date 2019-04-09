@@ -14,4 +14,8 @@ end
 def deduct(value)
   @balance -= value
 end
+
+def in_journey?
+  false
+end
 end

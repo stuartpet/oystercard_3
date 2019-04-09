@@ -30,4 +30,11 @@ describe "#deduct" do
     expect{ subject.deduct 1}.to change{ subject.balance }.by -1
   end
 end
+
+describe "#touch_in" do
+
+  it 'is initially not in a journey' do
+  expect(subject).not_to be_in_journey
+ end
+end
 end
