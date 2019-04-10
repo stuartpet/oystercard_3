@@ -1,7 +1,12 @@
 
 require 'oystercard'
 
+class Oystercard
+  public :deduct
+end
+
 describe Oystercard do
+
   it 'checks card balance is zero' do
     expect(subject.balance).to eq (0)
   end
@@ -62,6 +67,12 @@ describe "#touch_out" do
     expect(subject).not_to be_in_journey
 
 end
+
+  it "deducts fare value from balance" do
+    subject.top_up(10)
+    subject.touch_in
+    expect { subject.touch_out }.to change { subject.balance }.by -2
+  end
 end
 
 end
