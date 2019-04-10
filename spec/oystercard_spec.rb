@@ -45,24 +45,36 @@ end
 
 describe "#touch_in" do
 
+
+let(:station) { double :station }
+
+
   it "can touch in" do
   subject.top_up(Oystercard::MINIMUM_BALANCE)
-  subject.touch_in
+  subject.touch_in(station)
   expect(subject).to be_in_journey
 
  end
 
  it "raises an error if card balance is less then 1" do
    subject.top_up(0)
-   expect{ subject.touch_in }.to raise_error "you have less then #{Oystercard::MINIMUM_BALANCE}, please top up"
+   expect{ subject.touch_in(station) }.to raise_error "you have less then #{Oystercard::MINIMUM_BALANCE}, please top up"
+end
+
+it "remembers the station where touched in" do
+  subject.top_up(25)
+  subject.touch_in(station)
+  expect(subject.entry_station).to eq (station)
 end
 end
 
 describe "#touch_out" do
 
+  let(:station) { double :station }
+
   it "can touch out" do
     subject.top_up(Oystercard::MINIMUM_BALANCE)
-    subject.touch_in
+    subject.touch_in(station)
     subject.touch_out
     expect(subject).not_to be_in_journey
 
@@ -70,7 +82,7 @@ end
 
   it "deducts fare value from balance" do
     subject.top_up(10)
-    subject.touch_in
+    subject.touch_in(station)
     expect { subject.touch_out }.to change { subject.balance }.by -2
   end
 end
